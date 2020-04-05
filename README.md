@@ -1,7 +1,6 @@
-# Scrambler
+# scrambler.ext
 Randomizes file names together with their extensions.
-Forked from SavinaRoja/scrambler.py
-https://gist.github.com/SavinaRoja/1629319
+Forked from [SavinaRoja/scrambler.py](https://gist.github.com/SavinaRoja/1629319)
 
 ## Components
 * python script (the modified original)
