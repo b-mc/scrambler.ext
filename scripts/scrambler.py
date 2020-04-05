@@ -138,13 +138,15 @@ def matching(location, extensions, substrings, regex):
     return ext_matches & sub_matches & regex_matches
 
 
-def random_name(name, length=8, chars=string.ascii_uppercase+string.digits):
+def random_name(name, length=10, chars=string.ascii_lowercase+string.digits):
     '''Creates a random string containing ASCII character'''
-    ext = os.path.splitext(name)[1]
+    r_ext = '.'
     r_name = ''
-    for each in range(length):
+    for each in xrange(length):
         r_name += random.choice(chars)
-    return('{0}{1}'.format(r_name,ext))
+    for each in xrange(3):
+        r_ext += random.choice(string.ascii_lowercase)
+    return('{0}{1}'.format(r_name,r_ext))
 
 
 def main():
