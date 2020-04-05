@@ -71,6 +71,9 @@ import random
 import argparse
 
 __version__ = '0.1'
+chars = string.ascii_lowercase + string.digits
+random_name_length = 10
+ext_name_length = 3
 
 def matching(location, extensions, substrings, regex):
     # Compile regex if it was used
@@ -125,12 +128,12 @@ def matching(location, extensions, substrings, regex):
                 regex_matches.add(name)
     return ext_matches & sub_matches & regex_matches
 
-def random_name(name, length=10, chars=string.ascii_lowercase+string.digits):
+def random_name(name):
     r_name = ''
     r_ext = '.'
-    for each in range(length):
+    for each in range(random_name_length):
         r_name += random.choice(chars)
-    for each in range(3):
+    for each in range(ext_name_length):
         r_ext += random.choice(string.ascii_lowercase)
     return('{0}{1}'.format(r_name,r_ext))
 
