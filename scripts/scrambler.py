@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Scrambler is a small commandline script made to randomize file names. It stores
+Scrambler is a small commandline script made to randomize file names together with their extensions. It stores
 a log of all the file renaming events which it later uses to unscramble the
 names. This script may not guard against intentional dishonesty, but it does
 protect one from unconscious bias.
