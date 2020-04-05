@@ -38,30 +38,30 @@ Command Options:
                              unscrambling.
 """
 
-#This is free and unencumbered software released into the public domain.
+# This is free and unencumbered software released into the public domain.
 #
-#Anyone is free to copy, modify, publish, use, compile, sell, or
-#distribute this software, either in source code form or as a compiled
-#binary, for any purpose, commercial or non-commercial, and by any
-#means.
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
 #
-#In jurisdictions that recognize copyright laws, the author or authors
-#of this software dedicate any and all copyright interest in the
-#software to the public domain. We make this dedication for the benefit
-#of the public at large and to the detriment of our heirs and
-#successors. We intend this dedication to be an overt act of
-#relinquishment in perpetuity of all present and future rights to this
-#software under copyright law.
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
 #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-#EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-#MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-#IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-#OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-#OTHER DEALINGS IN THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
 #
-#For more information, please refer to <http://unlicense.org/>
+# For more information, please refer to <http://unlicense.org/>
 
 import os
 import re
@@ -70,24 +70,23 @@ import string
 import random
 import argparse
 
-__version__ = '0.2'
-
+__version__ = '0.1'
 
 def matching(location, extensions, substrings, regex):
-    #Compile regex if it was used
+    # Compile regex if it was used
     if regex is not None:
         regex = re.compile(regex)
 
-    #Add periods to extensions if not used
+    # Add periods to extensions if not used
     extensions = [ext if ext.startswith('.') else '.' + ext for ext in extensions]
 
-    #Everything in directory
+    # Everything in directory
     all_items = os.listdir(location)
 
-    #Remove all directories
+    # Remove all directories
     all_files = [item for item in all_items if os.path.isfile(os.path.join(location, item))]
 
-    #Remove all files with .py, .pyc, or .log extensions, also hidden files
+    # Remove all files with .py, .pyc, or .log extensions, also hidden files
     files = []
     for name in all_files:
         base, ext = os.path.splitext(name)
@@ -97,7 +96,7 @@ def matching(location, extensions, substrings, regex):
             continue
         files.append(name)
 
-    #Find files with matches
+    # Find files with matches
     if not extensions:
         ext_matches = set(files)
     else:
@@ -113,68 +112,59 @@ def matching(location, extensions, substrings, regex):
 
     for name in files:
         base, ext = os.path.splitext(name)
-        #Extension matching
+        # Extension matching
         if ext in extensions:
             ext_matches.add(name)
-        #Substring matching
+        # Substring matching
         for substring in substrings:
             if substring in base:
                 sub_matches.add(name)
-        #Regex matching
+        # Regex matching
         if regex is not None:
             if regex.match(name) is not None:
                 regex_matches.add(name)
-
     return ext_matches & sub_matches & regex_matches
 
-
 def random_name(name, length=10, chars=string.ascii_lowercase+string.digits):
-    '''Creates a random string containing ASCII character'''
-    r_ext = '.'
     r_name = ''
+    r_ext = '.'
     for each in range(length):
         r_name += random.choice(chars)
     for each in range(3):
         r_ext += random.choice(string.ascii_lowercase)
     return('{0}{1}'.format(r_name,r_ext))
 
-
 def main():
-    #This makes parsing commandline arguments simple
+    # This makes parsing commandline arguments simple
     p = argparse.ArgumentParser(description='Scrambler Parser')
-    p.add_argument('-v', '--version', action='version',
-                   version='Scrambler {0}'.format(__version__))
+    p.add_argument('-v', '--version', action='version', version='Scrambler {0}'.format(__version__))
     p.add_argument('-d', '--directory', action='store', default=os.getcwd(),
                    help='Specify a nonlocal path location to scramble.')
     p.add_argument('-e', '--extension', action='store', nargs='+', default=[],
-                   help='''List one or more file extensions to narrow down \
-which kinds of files will be scrambled.''')
+                   help='''List one or more file extensions to narrow down which kinds of files will be scrambled.''')
     p.add_argument('-s', '--substring', action='store', nargs='+', default=[],
-                   help='''Only files which match *at least one of* the \
-provided substrings will be scrambled.''')
+                   help='''Only files which match *at least one of* the provided substrings will be scrambled.''')
     p.add_argument('-r', '--regex', action='store', default=None,
                    help='Only files which match the regex will be scrambled.')
     p.add_argument('-l', '--log', action='store', default=False,
-                   help='''Manually name the resulting log file, an automatic \
-one will be applied otherwise.''')
+                   help='''Manually name the resulting log file, an automatic one will be applied otherwise.''')
     p.add_argument('-u', '--unscramble', action='store', default=False,
                    help='Unscramble the filenames from the specified log file.')
-    #args will hold the argument values as attributes
+    # args will hold the argument values as attributes
     args = p.parse_args()
-    #Workflow for scrambling
+    # Workflow for scrambling
     if not args.unscramble:
-        #Get all of the files that satisfy the matching criteria
-        files = matching(args.directory, args.extension,
-                         args.substring, args.regex)
-        #Move to the new directory
+        # Get all of the files that satisfy the matching criteria
+        files = matching(args.directory, args.extension, args.substring, args.regex)
+        # Move to the new directory
         os.chdir(args.directory)
-        #Check for a valid logname
+        # Check for a valid logname
         if args.log:
             logname = args.log
         else:
             logname = '{0}_scramble.log'.format(os.path.split(os.getcwd())[1])
 
-        #Check for pre-existence of the log file, treat
+        # Check for pre-existence of the log file, treat
         while os.path.isfile(logname):
             print('The logname \"{0}\" already exists.'.format(logname))
             raw = input('Enter a new name? (Leave blank to abort) ')
@@ -190,18 +180,17 @@ one will be applied otherwise.''')
 
         with open(logname, 'w') as log:
             log.write('Scrambler.py Log\n')
-            for each in files:
-                new = random_name(each)
-                log.write('{0} --> {1}\n'.format(each, new))
-                os.rename(each, new)
-
+            for file in files:
+                new = random_name(file)
+                log.write('{0} --> {1}\n'.format(file, new))
+                os.rename(file, new)
     else:
-        #Split the path into the directory and the name of the log file
+        # Split the path into the directory and the name of the log file
         d, log = os.path.split(args.unscramble)
-        #Move to the new directory
+        # Move to the new directory
         d = os.path.abspath(d)
         os.chdir(d)
-        #Locate the listed logfile
+        # Locate the listed logfile
         if os.path.isfile(log):
             with open(log, 'r') as logfile:
                 lines = logfile.readlines()
