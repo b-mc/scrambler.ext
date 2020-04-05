@@ -70,16 +70,6 @@ import string
 import random
 import argparse
 
-#Some agnosticism of Python2 and Python3 names
-try:
-    input = raw_input
-except NameError:
-    pass
-try:
-    range = xrange
-except NameError:
-    pass
-
 __version__ = '0.2'
 
 
@@ -142,9 +132,9 @@ def random_name(name, length=10, chars=string.ascii_lowercase+string.digits):
     '''Creates a random string containing ASCII character'''
     r_ext = '.'
     r_name = ''
-    for each in xrange(length):
+    for each in range(length):
         r_name += random.choice(chars)
-    for each in xrange(3):
+    for each in range(3):
         r_ext += random.choice(string.ascii_lowercase)
     return('{0}{1}'.format(r_name,r_ext))
 
